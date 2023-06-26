@@ -10,10 +10,20 @@ const routes = [
           auth: true,
         },
       },
-      { path: "login", component: () => import("pages/LoginPage.vue") },
+      {
+        path: "login",
+        component: () => import("pages/LoginPage.vue"),
+      },
       {
         path: "protected",
         component: () => import("pages/ProtectedPage.vue"),
+        meta: {
+          auth: true,
+        },
+      },
+      {
+        path: "about",
+        component: () => import("pages/AboutPage.vue"),
         meta: {
           auth: true,
         },

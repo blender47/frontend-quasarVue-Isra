@@ -25,7 +25,14 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach(async (to, from, next) => {
     const requiredAuth = to.meta.auth;
     const userStore = useUserStore();
-    if (requiredAuth) {
+
+    // si existe el token en memoria
+    if (userStore.token) {
+      return next();
+    }
+
+    // Si no existe el token v2
+    if (requiredAuth || sessionStorage.getItem("user")) {
       await userStore.refreshToken();
       if (userStore.token) {
         return next();
@@ -33,6 +40,29 @@ export default route(function (/* { store, ssrContext } */) {
       return next("/login");
     }
     next();
+
+    // Si no existe el token v1
+    // if (sessionStorage.getItem("user")) {
+    //   await userStore.refreshToken();
+
+    //   if (requiredAuth) {
+    //     if (userStore.token) {
+    //       return next();
+    //     }
+    //     return next("/login");
+    //   } else {
+    //     return next();
+    //   }
+    // } else {
+    //   if (requiredAuth) {
+    //     await userStore.refreshToken();
+    //     if (userStore.token) {
+    //       return next();
+    //     }
+    //     return next("/login");
+    //   }
+    //   next();
+    // }
   });
 
   return Router;

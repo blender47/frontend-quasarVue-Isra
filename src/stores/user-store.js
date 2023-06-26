@@ -16,6 +16,7 @@ export const useUserStore = defineStore("user", () => {
       console.log(res.data);
       token.value = res.data.token;
       expiresIn.value = res.data.expiresIn;
+      sessionStorage.setItem("user", true);
       setTime();
     } catch (error) {
       console.log(error);
@@ -29,6 +30,7 @@ export const useUserStore = defineStore("user", () => {
       console.log(error);
     } finally {
       resetStore();
+      sessionStorage.removeItem("user");
     }
   };
 
@@ -43,9 +45,11 @@ export const useUserStore = defineStore("user", () => {
       const res = await api.get("/auth/refresh");
       token.value = res.data.token;
       expiresIn.value = res.data.expiresIn;
+      sessionStorage.setItem("user", true);
       setTime();
     } catch (error) {
       console.log(error);
+      sessionStorage.removeItem("user");
     }
   };
 
