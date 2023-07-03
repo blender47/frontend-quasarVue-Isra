@@ -8,11 +8,12 @@ const userStore = useUserStore();
 const router = useRouter();
 const email = ref("");
 const password = ref("");
+const repassword = ref("");
 const $q = useQuasar();
 const handleSubmit = async () => {
   try {
     console.log("pasaromn las validaciones");
-    await userStore.accessa(email.value, password.value);
+    await userStore.register(email.value, password.value, repassword.value);
     router.push("/");
     email.value = "";
     password.value = "";
@@ -33,7 +34,7 @@ const alertDialogBackend = (message = "Error en el servidor") => {
 <template>
   <q-page class="row justify-center">
     <div class="col-12 col-sm-6 col-md-5">
-      <h3>Login</h3>
+      <h3>Register</h3>
       <q-form @submit.prevent="handleSubmit">
         <q-input
           v-model="email"
@@ -52,6 +53,14 @@ const alertDialogBackend = (message = "Error en el servidor") => {
             (val) =>
               (val && val.length > 5) ||
               'Contraseña debe ser mayor a 5 caracters',
+          ]"
+        ></q-input>
+        <q-input
+          v-model="repassword"
+          label="Ingrese Password"
+          type="password"
+          :rules="[
+            (val) => (val && val === password) || 'No coincide el password',
           ]"
         ></q-input>
         <q-btn label="Login" type="submit"></q-btn>
