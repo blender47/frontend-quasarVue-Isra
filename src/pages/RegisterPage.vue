@@ -57,7 +57,7 @@ const alertDialogBackend = (message = "Error en el servidor") => {
         ></q-input>
         <q-input
           v-model="repassword"
-          label="Ingrese Password"
+          label="Confirme Password"
           type="password"
           :rules="[
             (val) => (val && val === password) || 'No coincide el password',
