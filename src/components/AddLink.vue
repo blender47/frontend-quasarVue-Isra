@@ -6,6 +6,7 @@ import { useNotify } from "../composables/notifyHook";
 const useLink = useLinkStore();
 const { showNotify } = useNotify();
 const loading = ref();
+const formAdd = ref(null);
 const link = ref();
 const addLink = async () => {
   try {
@@ -13,6 +14,7 @@ const addLink = async () => {
     await useLink.createLink(link.value);
     showNotify("Link agregado exitosamente", "green");
     link.value = "";
+    formAdd.value.resetValidation();
   } catch (error) {
     if (error.errors) {
       return error.errors.forEach((item) => {
@@ -27,7 +29,7 @@ const addLink = async () => {
 </script>
 
 <template>
-  <q-form @submit.prevent="addLink">
+  <q-form @submit.prevent="addLink" ref="formAdd">
     <q-input
       v-model="link"
       label="Ingrese su link aqui"
@@ -35,6 +37,7 @@ const addLink = async () => {
         (val) =>
           (val && val.trim() !== '') || 'Tienes que escribir algo a huevo',
       ]"
+      lazy-rules
     >
     </q-input>
     <q-btn
